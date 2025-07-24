@@ -13,9 +13,18 @@ from django.db import models
 #     def __str__(self):
 #         return f"{self.pri_nombre} {self.pri_apellido}"
     
-class Horarios(models.Model):
+class Horario(models.Model):
     dia = models.DateField()
-    horario_apertura=models.TimeField(blank=True)
-    horario_cierre=models.TimeField(blank=True)
+    horario_apertura=models.TimeField()
+    horario_cierre=models.TimeField()
     def __str__(self):
         return f"{self.dia} {self.horario_apertura} {self.horario_cierre}"
+
+class Cancha(models.Model):
+    nombre=models.CharField(max_length=50,unique=True)
+    ciudad=models.CharField(max_length=50)
+    comuna=models.CharField(max_length=30)
+    direcion=models.CharField(max_length=30, unique=True)
+    id_horario=models.ManyToManyField(Horario)
+    def __str__(self):
+        return self.nombre
