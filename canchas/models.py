@@ -8,6 +8,9 @@ class Direccion(models.Model):
 
     def __str__(self):
         return f"{self.nombre_calle} #{self.num_calle}, {self.comuna}, {self.region}"
+    
+
+
 class Director_Tecnico(models.Model):
     num_run = models.IntegerField()
     dv_run = models.CharField(max_length=1)
@@ -22,6 +25,8 @@ class Director_Tecnico(models.Model):
     def __str__(self):
         return f"{self.pri_nombre} {self.pri_apellido} {self.nacionalidad} "
     
+
+    
 class Equipo(models.Model):
     id = models.AutoField(primary_key=True) # Es necesario el id acá? # No debería ser automático?
     name = models.CharField(max_length=20)
@@ -30,6 +35,9 @@ class Equipo(models.Model):
     id_DT = models.OneToOneField(Director_Tecnico,on_delete=models.CASCADE,related_name="equipo") ## esta conexion es para que sea OneToOne la de arriba permite que sea un director para varios equipos depende como lo vemos cual va
     def __str__(self):
         return f"{self.id} {self.name} {self.puntos} {self.id_DT}"
+    
+
+
 
 class Jugador(models.Model):
     num_run = models.IntegerField()
@@ -45,6 +53,8 @@ class Jugador(models.Model):
     id_equipo= models.ForeignKey(Equipo, on_delete=models.CASCADE)
     def __str__(self):
         return f"{self.num_run} {self.dv_run} {self.pnombre} {self.snombre} {self.appaterno} {self.apmaterno} {self.nacionalidad} {self.telefono} {self.fecha_nac} {self.id_direccion}"
+
+
 
 class Horario(models.Model):
     dia = models.DateField()
@@ -68,6 +78,8 @@ class Fecha_Campeonato(models.Model):
     torneo = models.ForeignKey(Torneo, on_delete=models.CASCADE, related_name="fechas")
     def __str__(self):
         return f"{self.numero_fecha} {self.dia_inicio_fecha} {self.dia_final_fecha}"
+    
+
 
         
 class Cancha(models.Model):
@@ -78,6 +90,9 @@ class Cancha(models.Model):
     id_horario=models.ManyToManyField(Horario)
     def __str__(self):
         return f"{self.nombre} {self.ciudad} {self.comuna} {self.direccion} {self.id_horario}"
+    
+
+
 
 class Arbitro(models.Model):
     num_run = models.IntegerField()
