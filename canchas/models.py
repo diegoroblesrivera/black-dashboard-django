@@ -37,7 +37,7 @@ class Jugador(models.Model):
     fecha_nac = models.DateField()
     id_direccion = models.ForeignKey(Direccion, on_delete=models.CASCADE)
     def __str__(self):
-        return f"{self.pnombre} {self.appaterno}"
+        return f"{self.num_run} {self.dv_run} {self.pnombre} {self.snombre} {self.appaterno} {self.apmaterno} {self.nacionalidad} {self.telefono} {self.fecha_nac} {self.id_direccion}"
 
 class Horario(models.Model):
     dia = models.DateField()
@@ -62,7 +62,7 @@ class Fecha_Campeonato(models.Model):
     def __str__(self):
         return f"{self.numero_fecha} {self.dia_inicio_fecha} {self.dia_final_fecha}"
 
-    
+        
 class Cancha(models.Model):
     nombre=models.CharField(max_length=50,unique=True)
     ciudad=models.CharField(max_length=50)
@@ -70,7 +70,7 @@ class Cancha(models.Model):
     direccion=models.CharField(max_length=30, unique=True)
     id_horario=models.ManyToManyField(Horario)
     def __str__(self):
-        return self.nombre
+        return f"{self.nombre} {self.ciudad} {self.comuna} {self.direccion} {self.id_horario}"
 
 
 
@@ -89,12 +89,44 @@ class Director_Tecnico(models.Model):
     def __str__(self):
         return f"{self.pri_nombre} {self.pri_apellido} {self.nacionalidad} {self.correo_electronico} {self.telefono}"
     
-    
+
 
 class Equipo(models.Model):
-    id = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True) # Es necesario el id acá?
     name = models.CharField(max_length=20)
     puntos=models.IntegerField(default=0)
     id_DT = models.ForeignKey(Director_Tecnico, on_delete=models.CASCADE, related_name="id_DT")
     def __str__(self):
-        return f"{self.Id} {self.name} {self.puntos} {self.id_DT} "
+        return f"{self.Id} {self.name} {self.puntos} {self.id_DT}"
+
+
+
+class Arbitro(models.Model):
+    num_run = models.IntegerField()
+    dv_run = models.CharField(max_length=1)
+    pnombre = models.CharField(max_length=50)
+    snombre = models.CharField(max_length=50)
+    appaterno = models.CharField(max_length=50)
+    apmaterno = models.CharField(max_length=50)
+    nacionalidad = models.CharField(max_length=50) 
+    fecha_nac = models.DateField()
+    telefono = models.CharField(max_length=20)
+    correo = models.EmailField(max_length=100, unique=True)
+    id_direccion = models.ForeignKey(Direccion, on_delete=models.CASCADE)
+    def __str__(self):
+        return f"{self.num_run} {self.dv_run} {self.pnombre} {self.snombre} {self.appaterno} {self.apmaterno} {self.nacionalidad} {self.fecha_nac} {self.telefono} {self.correo} {self.id_direccion}" 
+
+
+
+class Partido(models.Model):
+    hora = models.TimeField()
+    id_fecha = models.ForeignKey(Fecha_Campeonato, on_delete=models.CASCADE)
+    id_cancha = models.ForeignKey(Cancha, on_delete=models.CASCADE)
+    equipo_local = models.ForeignKey(Equipo, on_delete=models.CASCADE, related_name='partido_como_local')
+    equipo_visita = models.ForeignKey(Equipo, on_delete=models.CASCADE, related_name='partido_como_visita')
+    id_arbitro = models.ForeignKey(Arbitro, on_delete=models.CASCADE)
+    clima = models.CharField(max_length=50)
+    observaciones = models.TextField(max_length=500)
+    equipo_ganador = models.CharField(max_length=100)
+    def __str__(self):
+        return f"{self.hora} {self.id_fecha} {self.id_cancha} {self.equipo_local} {self.equipo_visita} {self.id_arbitro} {self.clima} {self.observaciones} {self.equipo_ganador}"
