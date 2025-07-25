@@ -61,9 +61,11 @@ class Fecha_Campeonato(models.Model):
     numero_fecha = models.IntegerField()
     dia_inicio_fecha = models.DateField(blank=True)
     dia_final_fecha = models.DateField(blank=True)
-    torneo = models.ForeignKey(Torneo, on_delete=models.CASCADE, related_name="fechas")
+    torneo = models.ForeignKey(Torneo, on_delete=models.CASCADE)
     def __str__(self):
         return f"{self.numero_fecha} {self.dia_inicio_fecha} {self.dia_final_fecha}"
+
+
 
     
 class Cancha(models.Model):
@@ -74,3 +76,16 @@ class Cancha(models.Model):
     id_horario=models.ManyToManyField(Horario)
     def __str__(self):
         return self.nombre
+    
+
+# class Partido(models.Model):
+#     hora = models.TimeField()
+#     id_fecha = models.ForeignKey(Fecha_Campeonato, on_delete=models.CASCADE)
+#     id_cancha = models.ForeignKey(Cancha, on_delete=models.CASCADE)
+#     equipo_local = models.ForeignKey(Equipo, on_delete=models.CASCADE)
+#     equipo_visita = models.ForeignKey(Equipo, on_delete=models.CASCADE)
+#     id_arbitro = models.ForeignKey(Arbitro, on_delete=models.CASCADE)
+#     estado = models.CharField(max_length=50)
+#     clima = models.CharField(max_length=50)
+#     observaciones = models.TextField(max_length=1000)
+#     equipo_ganador = models.CharField(max_length=15)
