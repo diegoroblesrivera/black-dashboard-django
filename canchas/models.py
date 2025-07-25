@@ -8,7 +8,28 @@ class Direccion(models.Model):
 
     def __str__(self):
         return f"{self.nombre_calle} #{self.num_calle}, {self.comuna}, {self.region}"
-
+class Director_Tecnico(models.Model):
+    num_run = models.IntegerField()
+    dv_run = models.CharField(max_length=1)
+    pri_nombre=models.CharField(max_length=20)
+    sec_nombre=models.CharField(max_length=20,blank=True)
+    pri_apellido=models.CharField(max_length=20)
+    sec_apellido=models.CharField(max_length=20,blank=True)
+    nacionalidad=models.CharField(max_length=30)
+    id_direccion =models.ForeignKey(Direccion, on_delete=models.CASCADE)  
+    correo_electronico=models.EmailField(max_length=30,unique=True)
+    telefono=models.CharField(max_length=20)
+    def __str__(self):
+        return f"{self.pri_nombre} {self.pri_apellido} {self.nacionalidad} "
+    
+class Equipo(models.Model):
+    id = models.AutoField(primary_key=True) # Es necesario el id acá? # No debería ser automático?
+    name = models.CharField(max_length=20)
+    puntos=models.IntegerField(default=0)
+    # id_DT = models.ForeignKey(Director_Tecnico, on_delete=models.CASCADE, related_name="id_DT")
+    id_DT = models.OneToOneField(Director_Tecnico,on_delete=models.CASCADE,related_name="equipo") ## esta conexion es para que sea OneToOne la de arriba permite que sea un director para varios equipos depende como lo vemos cual va
+    def __str__(self):
+        return f"{self.id} {self.name} {self.puntos} {self.id_DT}"
 
 class Jugador(models.Model):
     num_run = models.IntegerField()
@@ -21,6 +42,7 @@ class Jugador(models.Model):
     telefono = models.IntegerField()
     fecha_nac = models.DateField()
     id_direccion = models.ForeignKey(Direccion, on_delete=models.CASCADE)
+    id_equipo= models.ForeignKey(Equipo, on_delete=models.CASCADE)
     def __str__(self):
         return f"{self.num_run} {self.dv_run} {self.pnombre} {self.snombre} {self.appaterno} {self.apmaterno} {self.nacionalidad} {self.telefono} {self.fecha_nac} {self.id_direccion}"
 
@@ -56,36 +78,6 @@ class Cancha(models.Model):
     id_horario=models.ManyToManyField(Horario)
     def __str__(self):
         return f"{self.nombre} {self.ciudad} {self.comuna} {self.direccion} {self.id_horario}"
-
-
-
-
-class Director_Tecnico(models.Model):
-    num_run = models.IntegerField()
-    dv_run = models.CharField(max_length=1)
-    pri_nombre=models.CharField(max_length=20)
-    sec_nombre=models.CharField(max_length=20,blank=True)
-    pri_apellido=models.CharField(max_length=20)
-    sec_apellido=models.CharField(max_length=20,blank=True)
-    nacionalidad=models.CharField(max_length=30)
-    id_direccion =models.ForeignKey(Direccion, on_delete=models.CASCADE)  
-    correo_electronico=models.EmailField(max_length=30,unique=True)
-    telefono=models.CharField(max_length=20)
-    def __str__(self):
-        return f"{self.pri_nombre} {self.pri_apellido} {self.nacionalidad} "
-    
-
-
-class Equipo(models.Model):
-    id = models.AutoField(primary_key=True) # Es necesario el id acá? # No debería ser automático?
-    name = models.CharField(max_length=20)
-    puntos=models.IntegerField(default=0)
-    id_DT = models.ForeignKey(Director_Tecnico, on_delete=models.CASCADE, related_name="id_DT")
-#   id_DT = models.OneToOneField(Director_Tecnico,on_delete=models.CASCADE,related_name="equipo") ## esta conexion es para que sea OneToOne la de arriba permite que sea un director para varios equipos depende como lo vemos cual va
-    def __str__(self):
-        return f"{self.id} {self.name} {self.puntos} {self.id_DT}"
-
-
 
 class Arbitro(models.Model):
     num_run = models.IntegerField()
