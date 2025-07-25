@@ -118,6 +118,8 @@ class Arbitro(models.Model):
 
 
 
+
+
 class Partido(models.Model):
     hora = models.TimeField()
     id_fecha = models.ForeignKey(Fecha_Campeonato, on_delete=models.CASCADE)
@@ -130,6 +132,8 @@ class Partido(models.Model):
     equipo_ganador = models.CharField(max_length=100)
     def __str__(self):
         return f"{self.hora} {self.id_fecha} {self.id_cancha} {self.equipo_local} {self.equipo_visita} {self.id_arbitro} {self.clima} {self.observaciones} {self.equipo_ganador}"
+
+
 
 class Estadistica_Jugador_Torneo(models.Model):
     torneo = models.ForeignKey(Torneo, on_delete=models.CASCADE)
@@ -144,6 +148,10 @@ class Estadistica_Jugador_Torneo(models.Model):
     def __str__(self):
         return f"{self.jugador} en {self.torneo}"
     
+
+
+
+    
 class Tarjeta(models.Model):
     TIPO_OPC = [
         ('amarilla', 'Amarilla'),
@@ -157,6 +165,9 @@ class Tarjeta(models.Model):
     
     def __str__(self):
         return f"{self.tipo.title()} a {self.jugador} en el minuto {self.minuto}"
+
+
+
 
 class Gol(models.Model):
     partido = models.ForeignKey(Partido, on_delete=models.CASCADE)
