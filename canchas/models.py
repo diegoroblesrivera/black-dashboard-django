@@ -130,3 +130,38 @@ class Partido(models.Model):
     equipo_ganador = models.CharField(max_length=100)
     def __str__(self):
         return f"{self.hora} {self.id_fecha} {self.id_cancha} {self.equipo_local} {self.equipo_visita} {self.id_arbitro} {self.clima} {self.observaciones} {self.equipo_ganador}"
+
+class Estadistica_Jugador_Torneo(models.Model):
+    torneo = models.ForeignKey(Torneo, on_delete=models.CASCADE)
+    jugador = models.ForeignKey(Jugador, on_delete=models.CASCADE)
+    total_goles =models.IntegerField(default=0)
+    total_amarillas = models.IntegerField(default=0)
+    total_rojas = models.IntegerField(default=0)
+
+#   class Meta:
+#   unique_together= ('torneo', 'jugador')
+
+    def __str__(self):
+        return f"{self.jugador} en {self.torneo}"
+    
+class Tarjeta(models.Model):
+    TIPO_OPC = [
+        ('amarilla', 'Amarilla'),
+        ('roja', 'Roja'),
+    ]
+
+    partido = models.ForeignKey(Partido, on_delete=models.CASCADE)
+    jugador = models.ForeignKey(Jugador, on_delete=models.CASCADE)
+    tipo = models.CharField(max_length=10, choices=TIPO_OPC)
+    minuto = models.IntegerField()
+    
+    def __str__(self):
+        return f"{self.tipo.title()} a {self.jugador} en el minuto {self.minuto}"
+
+class Gol(models.Model):
+    partido = models.ForeignKey(Partido, on_delete=models.CASCADE)
+    jugador = models.ForeignKey(Jugador, on_delete=models.CASCADE)
+    minuto = models.IntegerField()
+    
+    def __str__(self):
+        return f"Gol de {self.jugador} en el minuto {self.minuto}"
