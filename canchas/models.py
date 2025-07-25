@@ -71,24 +71,30 @@ class Cancha(models.Model):
     id_horario=models.ManyToManyField(Horario)
     def __str__(self):
         return self.nombre
-    
-class Director_tec(models.Model):
-    id = models.AutoField(primary_key=True)
-    nun_run = models.IntegerField()
+
+
+
+
+class Director_Tecnico(models.Model):
+    num_run = models.IntegerField()
     dv_run = models.CharField(max_length=1)
-    P_nombre = models.CharField(max_length=50)
-    S_nombre = models.CharField(max_length=50,blank= True)
-    Amaterno = models.CharField(max_length=50)
-    Nacionalidad = models.CharField(max_length=50)
-    Telefono = models.CharField(max_length=12)
-    correo = models.CharField(max_length=60 ,unique=True)
+    pri_nombre=models.CharField(max_length=20)
+    sec_nombre=models.CharField(max_length=20,blank=True)
+    pri_apellido=models.CharField(max_length=20)
+    sec_apellido=models.CharField(max_length=20,blank=True)
+    nacionalidad=models.CharField(max_length=30)
+    id_direccion =models.ForeignKey(Direccion, on_delete=models.CASCADE)  
+    correo_electronico=models.EmailField(max_length=30,unique=True)
+    telefono=models.CharField(max_length=20)
     def __str__(self):
-        return f"{self.Id} {self.dv_run} {self.nun_run} {self.P_nombre} {self.S_nombre} {self.Apaterno}{self.Amaterno}{self.Nacionalidad}{self.Telefono}{self.correo} "
+        return f"{self.pri_nombre} {self.pri_apellido} {self.nacionalidad} {self.correo_electronico} {self.telefono}"
+    
+    
 
 class Equipo(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=20)
     puntos=models.IntegerField(default=0)
-    id_DT = models.ForeignKey(Director_tec, on_delete=models.CASCADE, related_name="id_DT")
+    id_DT = models.ForeignKey(Director_Tecnico, on_delete=models.CASCADE, related_name="id_DT")
     def __str__(self):
         return f"{self.Id} {self.name} {self.puntos} {self.id_DT} "
