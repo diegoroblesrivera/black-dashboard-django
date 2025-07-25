@@ -99,6 +99,13 @@ class Arbitro(models.Model):
 
 
 class Partido(models.Model):
+    ganador = TIPO_OPC = [
+        ('local', 'Local'),
+        ('visita', 'Visita'),
+        ('empate', 'Empate')
+    ]
+
+
     hora = models.TimeField()
     id_fecha = models.ForeignKey(Fecha_Campeonato, on_delete=models.CASCADE)
     id_cancha = models.ForeignKey(Cancha, on_delete=models.CASCADE)
@@ -107,7 +114,7 @@ class Partido(models.Model):
     id_arbitro = models.ForeignKey(Arbitro, on_delete=models.CASCADE)
     clima = models.CharField(max_length=50)
     observaciones = models.TextField(max_length=500)
-    equipo_ganador = models.CharField(max_length=100)
+    equipo_ganador = models.CharField(max_length=20, choices=ganador)
     def __str__(self):
         return f"{self.hora} {self.id_fecha} {self.id_cancha} {self.equipo_local} {self.equipo_visita} {self.id_arbitro} {self.clima} {self.observaciones} {self.equipo_ganador}"
 
