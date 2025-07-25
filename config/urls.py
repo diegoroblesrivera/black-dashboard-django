@@ -19,6 +19,7 @@ from rest_framework.authtoken.views import obtain_auth_token # <-- NEW
 
 urlpatterns = [
     path('', include('apps.pages.urls')),
+    path('', include('canchas.urls')),
     path('', include('apps.dyn_dt.urls')),
     path('', include('apps.dyn_api.urls')),
     path('charts/', include('apps.charts.urls')),

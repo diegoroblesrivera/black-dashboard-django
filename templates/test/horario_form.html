@@ -1,0 +1,45 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block title %}Charts{% endblock title %}
+
+{% block content %}
+<div class="content">
+    <div class="row">
+        <h2>Crear Horario</h2>
+
+          <form method="POST">
+              {% csrf_token %}
+              {{ form.as_p }}
+              <button type="submit">Guardar</button>
+          </form>
+    </div>
+</div>
+{% endblock content %}
+
+{% block extrajs %}
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var products = JSON.parse('{{ products|escapejs }}');
+    var names = products.map(p => p.fields.name);
+    var prices = products.map(p => p.fields.price);
+
+    var barOptions = {
+      chart: { type: 'bar', height: 350 },
+      series: [{ name: 'Price', data: prices }],
+      xaxis: { categories: names }
+    };
+    var barChart = new ApexCharts(document.querySelector("#bar-chart"), barOptions);
+    barChart.render();
+
+    var pieOptions = {
+      chart: { type: 'pie', height: 350 },
+      series: prices,
+      labels: names
+    };
+    var pieChart = new ApexCharts(document.querySelector("#pie-chart"), pieOptions);
+    pieChart.render();
+  });
+</script>
+{% endblock extrajs %}
