@@ -72,17 +72,18 @@ class Director_Tecnico(models.Model):
     correo_electronico=models.EmailField(max_length=30,unique=True)
     telefono=models.CharField(max_length=20)
     def __str__(self):
-        return f"{self.pri_nombre} {self.pri_apellido} {self.nacionalidad} {self.correo_electronico} {self.telefono}"
+        return f"{self.pri_nombre} {self.pri_apellido} {self.nacionalidad} "
     
 
 
 class Equipo(models.Model):
-    id = models.AutoField(primary_key=True) # Es necesario el id acá?
+    id = models.AutoField(primary_key=True) # Es necesario el id acá? # No debería ser automático?
     name = models.CharField(max_length=20)
     puntos=models.IntegerField(default=0)
     id_DT = models.ForeignKey(Director_Tecnico, on_delete=models.CASCADE, related_name="id_DT")
+#   id_DT = models.OneToOneField(Director_Tecnico,on_delete=models.CASCADE,related_name="equipo") ## esta conexion es para que sea OneToOne la de arriba permite que sea un director para varios equipos depende como lo vemos cual va
     def __str__(self):
-        return f"{self.Id} {self.name} {self.puntos} {self.id_DT}"
+        return f"{self.id} {self.name} {self.puntos} {self.id_DT}"
 
 
 
