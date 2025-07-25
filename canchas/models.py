@@ -13,10 +13,7 @@ from django.db import models
 #     def __str__(self):
 #         return f"{self.pri_nombre} {self.pri_apellido}"
     
-class Horarios(models.Model):
-    dia = models.DateField()
-    horario_apertura=models.TimeField(blank=True)
-    horario_cierre=models.TimeField(blank=True)
+
 
 class Direccion(models.Model):
     nombre_calle = models.CharField(max_length=100)
@@ -61,11 +58,9 @@ class Fecha_Campeonato(models.Model):
     numero_fecha = models.IntegerField()
     dia_inicio_fecha = models.DateField(blank=True)
     dia_final_fecha = models.DateField(blank=True)
-    torneo = models.ForeignKey(Torneo, on_delete=models.CASCADE)
+    torneo = models.ForeignKey(Torneo, on_delete=models.CASCADE, related_name="fechas")
     def __str__(self):
         return f"{self.numero_fecha} {self.dia_inicio_fecha} {self.dia_final_fecha}"
-
-
 
     
 class Cancha(models.Model):
@@ -77,15 +72,23 @@ class Cancha(models.Model):
     def __str__(self):
         return self.nombre
     
+class Director_tec(models.Model):
+    id = models.AutoField(primary_key=True)
+    nun_run = models.IntegerField()
+    dv_run = models.CharField(max_length=1)
+    P_nombre = models.CharField(max_length=50)
+    S_nombre = models.CharField(max_length=50,blank= True)
+    Amaterno = models.CharField(max_length=50)
+    Nacionalidad = models.CharField(max_length=50)
+    Telefono = models.CharField(max_length=12)
+    correo = models.CharField(max_length=60 ,unique=True)
+    def __str__(self):
+        return f"{self.Id} {self.dv_run} {self.nun_run} {self.P_nombre} {self.S_nombre} {self.Apaterno}{self.Amaterno}{self.Nacionalidad}{self.Telefono}{self.correo} "
 
-# class Partido(models.Model):
-#     hora = models.TimeField()
-#     id_fecha = models.ForeignKey(Fecha_Campeonato, on_delete=models.CASCADE)
-#     id_cancha = models.ForeignKey(Cancha, on_delete=models.CASCADE)
-#     equipo_local = models.ForeignKey(Equipo, on_delete=models.CASCADE)
-#     equipo_visita = models.ForeignKey(Equipo, on_delete=models.CASCADE)
-#     id_arbitro = models.ForeignKey(Arbitro, on_delete=models.CASCADE)
-#     estado = models.CharField(max_length=50)
-#     clima = models.CharField(max_length=50)
-#     observaciones = models.TextField(max_length=1000)
-#     equipo_ganador = models.CharField(max_length=15)
+class Equipo(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=20)
+    puntos=models.IntegerField(default=0)
+    id_DT = models.ForeignKey(Director_tec, on_delete=models.CASCADE, related_name="id_DT")
+    def __str__(self):
+        return f"{self.Id} {self.name} {self.puntos} {self.id_DT} "
