@@ -13,10 +13,7 @@ from django.db import models
 #     def __str__(self):
 #         return f"{self.pri_nombre} {self.pri_apellido}"
     
-class Horarios(models.Model):
-    dia = models.DateField()
-    horario_apertura=models.TimeField(blank=True)
-    horario_cierre=models.TimeField(blank=True)
+
 
 class Direccion(models.Model):
     nombre_calle = models.CharField(max_length=100)
@@ -74,3 +71,24 @@ class Cancha(models.Model):
     id_horario=models.ManyToManyField(Horario)
     def __str__(self):
         return self.nombre
+    
+class Director_tec(models.Model):
+    id = models.AutoField(primary_key=True)
+    nun_run = models.IntegerField()
+    dv_run = models.CharField(max_length=1)
+    P_nombre = models.CharField(max_length=50)
+    S_nombre = models.CharField(max_length=50,blank= True)
+    Amaterno = models.CharField(max_length=50)
+    Nacionalidad = models.CharField(max_length=50)
+    Telefono = models.CharField(max_length=12)
+    correo = models.CharField(max_length=60 ,unique=True)
+    def __str__(self):
+        return f"{self.Id} {self.dv_run} {self.nun_run} {self.P_nombre} {self.S_nombre} {self.Apaterno}{self.Amaterno}{self.Nacionalidad}{self.Telefono}{self.correo} "
+
+class Equipo(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=20)
+    puntos=models.IntegerField(default=0)
+    id_DT = models.ForeignKey(Director_tec, on_delete=models.CASCADE, related_name="id_DT")
+    def __str__(self):
+        return f"{self.Id} {self.name} {self.puntos} {self.id_DT} "
