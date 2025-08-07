@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Estadísticas de Equipos</title>
+</head>
+<body>
+    <h1>Estadísticas de Equipos</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Equipo</th>
+               
+            </tr>
+        </thead>
+        <tbody>
+            {% for equipo in equipos %}
+            <tr>
+                <td>{{ equipo.nombre }}</td>
+              
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
